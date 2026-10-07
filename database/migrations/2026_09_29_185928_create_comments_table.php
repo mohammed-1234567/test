@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id()->primary();
-            $table->string('name');
-            $table->decimal('price', 8, 2);
-            // $table->boolean('in_stock')->default(true);
-            $table->integer('quantity');
-            $table->text('description')->nullable();
+            $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
+            $table->text('comment_text');
+            $table->string('author');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('comments');
     }
 };

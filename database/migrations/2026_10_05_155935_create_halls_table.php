@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id()->primary();
+        Schema::create('halls', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
-            $table->decimal('price', 8, 2);
-            // $table->boolean('in_stock')->default(true);
-            $table->integer('quantity');
-            $table->text('description')->nullable();
+            $table->integer('capacity');
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('halls');
     }
 };

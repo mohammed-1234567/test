@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         //return DB::table('users')->get();
-        return User::all();
+        return User::query()->get();
     }
         public function store(Request $request)
     {
@@ -30,7 +30,7 @@ class UserController extends Controller
             /*DB::table('users')
             ->where('id',$id)
             ->first();*/
-            return User::findorFail($id);
+            return User::query()->find($id);
         }
         public function update($id,Request $request){
             $user =User::findorFail($id);
