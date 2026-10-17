@@ -3,8 +3,13 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HallController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+use App\Models\Post;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -142,3 +147,32 @@ Route::get('halls',[HallController::class,'index']);
 Route::get('halls/{id}',[HallController::class,'show']);
 Route::put('halls/{id}',[HallController::class,'put']);
 Route::delete('halls/{id}',[HallController::class,'delete']);
+
+
+Route::get('orders',[OrderController::class,'index']);
+Route::post('orders',[OrderController::class,'store']);
+Route::get('orders/{id}',[OrderController::class,'show']);
+
+Route::post("favorites",function(){
+    $user =User::query()->find(2);
+    $product2 =Product::query()->find(2);
+    $product3 =Product::query()->find(3);
+
+    $user->products()->attach([2,3]);
+    });
+
+Route::get("favorites",function(){
+    $user =User::query()->find(2);
+    return $user->products;
+    });
+
+
+    Route::post("post_tag",function(){
+        $post =Post::query()->find(1);
+        $post->tags()->sync([2]);
+    });
+
+    Route::get("post_tag",function(){
+    $post =Post::query()->find(2);
+    return $post->tags;
+    });

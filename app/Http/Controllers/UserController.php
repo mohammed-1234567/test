@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -12,16 +13,25 @@ class UserController extends Controller
     public function index()
     {
         //return DB::table('users')->get();
-        return User::query()->get();
+        $user = User::with('orders')->get();
+        return $this-> success(data: $user, status: 200);
+
+
     }
         public function store(Request $request)
     {
-        //DB::table('users')->insert([
-        return User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>$request->password
+
+        $user = User::query()->create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => $request->password,
+
+    ]);
+
+        $user->orders()->create([
+            'price' => $request->price
         ]);
+        return $this-> success(data: $user, status: 200);
 
     }
 
@@ -45,6 +55,7 @@ class UserController extends Controller
             $user = User::findorFail($id);
             $user->delete();
         }
+
 }
 
 

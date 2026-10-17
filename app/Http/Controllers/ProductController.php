@@ -10,17 +10,24 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     public function index(){
-        return Product::query()->get();
+        $products = Product::query()->get();
+        return view('products.index', compact('products'));
+    }
 
+    public function create()
+    {
+        return view('products.create');
     }
     public function store(StoreProductRequest  $request){
-        $product = Product::query()->create($request->validated());
-        return $this-> success(data: $product, status: 201);
+        Product::query()->create($request->validated());
+        $products = Product::query()->get();
+        return redirect()->route('products.index');
+        //return $this-> success(data: $product, status: 201);
 
     }
     public function show($id)
     {
-        return Product::query()->find($id);
+        $product = Product::query()->find($id);
         return $this-> success(data: $product, status: 201  );
     }
     public function put($id,UpdateProductRequest $request){
